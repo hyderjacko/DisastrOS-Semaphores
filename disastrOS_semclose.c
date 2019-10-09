@@ -15,8 +15,8 @@ void internal_semClose(){
 	//Than we remove it from semaphore descriptor list
 	//and free allocating memory
 	int fd = running->syscall_args[0];
-	SemDescriptor* sem_dscr = SemDescriptorList_byFd(running->sem_descriptors, fd);
-	sem_dscr = (SemDescriptor*)List_detach(&running->sem_descriptors, (List_Item*)sem_dscr);
+	SemDescriptor* sem_dscr = SemDescriptorList_byFd(&running->sem_descriptors, fd);
+	sem_dscr = (SemDescriptor*)List_detach(&running->sem_descriptors, (ListItem*)sem_dscr);
 	Semaphore* sem = sem_dscr->semaphore;
 	SemDescriptor_free(sem_dscr);
 	

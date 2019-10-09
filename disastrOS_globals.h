@@ -17,7 +17,7 @@ extern ListHead resources_list; // resources
 extern ListHead timer_list;     //timers (concrete)
 extern volatile int disastrOS_time; //global time of disastrOS
 
-extern SemaphoreList semaphores_list; //list of all semaphores
+extern ListHead semaphores_list; //list of all semaphores
 
 // a resource can be a device, a file or an ipc thing
 

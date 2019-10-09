@@ -19,7 +19,7 @@ void internal_semPost(){
 	sem->count++;
 	if(sem->count <= 0){
 		//we put the current waiting process in the ready list
-		List_insert(&ready_list, &ready_list->last, (ListItem*)running);
+		List_insert(&ready_list, &ready_list.last, (ListItem*)running);
 		running->status = Ready;
 	}
 	

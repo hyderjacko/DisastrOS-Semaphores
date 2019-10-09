@@ -26,7 +26,7 @@ void internal_semOpen(){
 	if(!sem){
 		//Allocating semaphore and add it in semaphores list
 		sem = Semaphore_alloc(id, count);
-		List_insert(&semaphores_list, semaphores_list->last, sem);
+		List_insert(&semaphores_list, semaphores_list.last, (ListItem*)sem);
 	}
 	
 	//Allocating semaphore descriptor for current process
