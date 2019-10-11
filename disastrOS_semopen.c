@@ -12,7 +12,7 @@ void internal_semOpen(){
 	// We take id semaphore from current process
 	int id = running->syscall_args[0];
 	if(id < 0){
-		printf("ERROR! Negative id, cannot initialized semaphore!\n");
+		printf("[SEM_OPEN_INFO] ERROR! Negative id, cannot initialized semaphore!\n");
 		running->syscall_retvalue = -1;
 		return;
 	}
