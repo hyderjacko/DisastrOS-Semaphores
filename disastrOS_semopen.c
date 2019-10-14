@@ -24,11 +24,15 @@ void internal_semOpen(){
 	//*** aggiunta variabile semaphores_list in disastrOS_globals.h ***
 	Semaphore* sem = SemaphoreList_byId(&semaphores_list, id);
 	if(sem==NULL){
+		printf("[SEM_OPEN_INFO] In this case, there's no semaphore with id N°%d.\n", id);
 		//Allocating semaphore and add it in semaphores list
+		printf("[SEM_OPEN_INFO] Allocating a new semaphore...\n");
 		sem = Semaphore_alloc(id, count);
 		List_insert(&semaphores_list, semaphores_list.last, (ListItem*)sem);
+		printf("[SEM_OPEN_INFO] Semaphore correctly created with id N°%d\n", id);
+	}else{
+		printf("[SEM_OPEN_INFO] In this case, the semaphore with id N°%d already exists.\n", id);
 	}
-	
 	//Allocating semaphore descriptor for current process
 	SemDescriptor* sem_dscr = SemDescriptor_alloc(running->last_sem_fd, sem, running);
 	SemDescriptorPtr* sem_dscr_ptr = SemDescriptorPtr_alloc(sem_dscr);
@@ -41,5 +45,6 @@ void internal_semOpen(){
 
 	//Set return value of the process to the semaphore file descriptor
 	running->syscall_retvalue = sem_dscr->fd;
+	
 	return;
 }
