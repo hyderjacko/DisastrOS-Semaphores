@@ -143,7 +143,7 @@ int main(int argc, char** argv){
   // we create the init process processes
   // the first is in the running variable
   // the others are in the ready queue
-  printf("the function pointer is: %p", childFunction);
+  printf("the function pointer is: %p\n", childFunction);
   // spawn an init process
   printf("start\n");
   disastrOS_start(initFunction, 0, logfilename);

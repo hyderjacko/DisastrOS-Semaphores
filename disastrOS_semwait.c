@@ -21,8 +21,8 @@ void internal_semWait(){
 		//Process can't access to the resource,
 		//so we put it and its descriptor in the waiting list
 		List_detach(&sem->descriptors, (ListItem*)sem_dscr);
-		List_insert(&sem->waiting_descriptors, &sem->waiting_descriptors.last, (ListItem*)sem_dscr);
-		List_insert(&waiting_list, &waiting_list.last, (ListItem*)running);
+		List_insert(&sem->waiting_descriptors, sem->waiting_descriptors.last, (ListItem*)sem_dscr);
+		List_insert(&waiting_list, waiting_list.last, (ListItem*)running);
 		running->status = Waiting;
 		
 		//Now we run the first process in the ready list
