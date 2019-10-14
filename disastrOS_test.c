@@ -27,7 +27,6 @@ void sleeperFunction(void* args){
 }
 
 void producer() {
-		
 	//Controlling if anyone is producing
 	disastrOS_semWait(sem_to_empty);
 	disastrOS_semWait(sem_cs_prod);
@@ -70,12 +69,12 @@ void childFunction(void* args){
 	printf("fd=%d\n", fd);
 	
 	//Opening semaphores
-	sem_cs_prod = disastrOS_semOpen(2, 1);
-	sem_cs_cons = disastrOS_semOpen(1, 1);
-	sem_to_empty = disastrOS_semOpen(4, BUFFER_SIZE);
-	sem_to_fill = disastrOS_semOpen(3, 0);
+	sem_cs_prod = disastrOS_semOpen(1, 1);
+	sem_cs_cons = disastrOS_semOpen(2, 1);
+	sem_to_empty = disastrOS_semOpen(3, BUFFER_SIZE);
+	sem_to_fill = disastrOS_semOpen(4, 0);
 
-  
+
 	for(int i = 1; i <= 10; i++){
 	
 		if(disastrOS_getpid() <= 5){

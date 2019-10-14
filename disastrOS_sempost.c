@@ -21,6 +21,19 @@ void internal_semPost(){
 		//we put the current waiting process in the ready list
 		List_insert(&ready_list, ready_list.last, (ListItem*)running);
 		running->status = Ready;
+		
+		//we need another process to run:
+		//removing the first descriptor from waiting descriptor list
+		SemDescriptorPtr* sem_dscr_ptr = (SemDescriptorPtr*)List_detach(&sem->waiting_descriptors, (ListItem*)sem->waiting_descriptors.first);
+		
+		//put it in descriptors list
+		List_insert(&sem->descriptors, sem->descriptors.last, (ListItem*)sem_dscr_ptr);
+		
+		//removing the relative process from waiting list
+		List_detach(&waiting_list, (ListItem*)sem_dscr_ptr->descriptor->pcb);
+		
+		//now we update the running process
+		running = sem_dscr_ptr->descriptor->pcb;
 	}
 	
 	running->syscall_retvalue = 0;
