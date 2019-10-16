@@ -21,7 +21,6 @@ void internal_semPost(){
 	if(sem->count <= 0){
 		//we put the current waiting process in the ready list
 		List_insert(&ready_list, ready_list.last, (ListItem*)running);
-		running->status = Ready;
 		printf("[SEM_POST_INFO] Process N°%d moved to ready list.\n",running->pid);
 		//we need another process to run:
 		//removing the first descriptor from waiting descriptor list
@@ -34,6 +33,7 @@ void internal_semPost(){
 		List_detach(&waiting_list, (ListItem*)sem_dscr_ptr->descriptor->pcb);
 		
 		//now we update the running process
+		running->status = Ready;
 		running = sem_dscr_ptr->descriptor->pcb;
 		printf("[SEM_POST_INFO] Process N°%d now is running.\n",running->pid);
 	}

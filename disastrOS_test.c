@@ -47,7 +47,6 @@ void producer() {
 	disastrOS_semPost(sem_cs_prod);
 	disastrOS_semPost(sem_to_fill);
 	
-	disastrOS_printStatus();
 }
 
 void consumer() {
@@ -61,7 +60,7 @@ void consumer() {
 	int val = buf[i_cons];
 	printf("[CONSUMER_INFO] Consuming the value in cell %d...\n", i_cons);
 	printf("[CONSUMER_INFO] Child N°%d consumed the value %d.\n", disastrOS_getpid(), val);
-	i_cons++;
+	i_cons = (i_cons+1) % BUFFER_SIZE;
 	
 	disastrOS_sleep(10);
 	
@@ -70,7 +69,6 @@ void consumer() {
 	disastrOS_semPost(sem_cs_cons);
 	disastrOS_semPost(sem_to_empty);
 	
-	disastrOS_printStatus();
 }
 
 void childFunction(void* args){
@@ -87,22 +85,25 @@ void childFunction(void* args){
 	sem_cs_cons = disastrOS_semOpen(2, 1);
 	sem_to_empty = disastrOS_semOpen(3, BUFFER_SIZE);
 	sem_to_fill = disastrOS_semOpen(4, 0);
+	
+	disastrOS_printStatus();
 
-
-	for(int i = 1; i <= 10; i++){
+	for(int i = 1; i < 11; i++){
 		
 		printf("[CHILD_INFO] PID: %d, iteration: %d...\n", disastrOS_getpid(), i);
 
-		if(disastrOS_getpid() <= 5){
-			printf("[CHILD_INFO] Role of child N°%d: producer.\n", disastrOS_getpid());
-			producer();
-		}
-		else{
+		if(disastrOS_getpid()%2 == 0){
 			printf("[CHILD_INFO] Role of child N°%d: consumer.\n", disastrOS_getpid());
 			consumer();
 		}
+		else{
+			printf("[CHILD_INFO] Role of child N°%d: producer.\n", disastrOS_getpid());
+			producer();
+		}
 	
 	}
+	
+	disastrOS_printStatus();
 	
 	//Closing semaphores
 	printf("Closing semaphores...\n");
@@ -112,12 +113,12 @@ void childFunction(void* args){
 	disastrOS_semClose(sem_to_fill);
 
 	printf("PID: %d, terminating\n", disastrOS_getpid());
-
+	/*
 	for (int i=0; i<(disastrOS_getpid()+1); ++i){
 		printf("PID: %d, iterate %d\n", disastrOS_getpid(), i);
 		disastrOS_sleep((20-disastrOS_getpid())*5);
-	}
-	disastrOS_exit(disastrOS_getpid()+1);
+	}*/
+	disastrOS_exit(disastrOS_getpid());
 }
 
 
