@@ -16,6 +16,11 @@ void internal_semClose(){
 	//and free allocating memory
 	int fd = running->syscall_args[0];
 	SemDescriptor* sem_dscr = SemDescriptorList_byFd(&running->sem_descriptors, fd);
+	if(!sem_dscr){
+		printf("[SEM_CLOSE_INFO] ERROR! Cannot close semaphore with fd: %d.\n", fd);
+		running->syscall_retvalue = -1;
+		return;
+	}
 	List_detach(&running->sem_descriptors, (ListItem*)sem_dscr);
 	Semaphore* sem = sem_dscr->semaphore;
 	SemDescriptorPtr* sem_dscr_ptr = (SemDescriptorPtr*)List_detach(&sem->descriptors, (ListItem*)sem_dscr->ptr);
@@ -36,5 +41,6 @@ void internal_semClose(){
 	running->last_sem_fd--;
 	
 	running->syscall_retvalue = 0;
+	printf("[SEM_CLOSE_INFO] Deallocated semaphore with fd: %d.\n", fd);
 	return;
 }

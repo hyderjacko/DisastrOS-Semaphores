@@ -13,6 +13,11 @@ void internal_semWait(){
 	//the semaphore
 	int fd = running->syscall_args[0];
 	SemDescriptor* sem_dscr = SemDescriptorList_byFd(&running->sem_descriptors, fd);
+	if(!sem_dscr){
+		printf("[SEM_WAIT_INFO] ERROR! Cannot use semaphore with fd: %d.\n", fd);
+		running->syscall_retvalue = -1;
+		return;
+	}
 	Semaphore* sem = sem_dscr->semaphore;
 	SemDescriptorPtr* sem_dscr_ptr = sem_dscr->ptr;
 	printf("[SEM_WAIT_INFO] process N°%d tring to access to shared resource: semWait launched on semaphore N°%d.\n", running->pid,sem->id);

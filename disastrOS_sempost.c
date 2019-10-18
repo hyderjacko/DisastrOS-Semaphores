@@ -12,6 +12,11 @@ void internal_semPost(){
 	//than we take the semaphore
 	int fd = running->syscall_args[0];
 	SemDescriptor* sem_dscr = SemDescriptorList_byFd(&running->sem_descriptors, fd);
+	if(!sem_dscr){
+		printf("[SEM_POST_INFO] ERROR! Cannot use semaphore with fd: %d.\n", fd);
+		running->syscall_retvalue = -1;
+		return;
+	}
 	Semaphore* sem = sem_dscr->semaphore;
 	
 	printf("[SEM_POST_INFO] Process N°%d want to free a shared resource: semPost launched on semaphore N°%d.\n", running->pid,sem->id);

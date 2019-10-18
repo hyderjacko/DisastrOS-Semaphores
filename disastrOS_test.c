@@ -88,7 +88,7 @@ void childFunction(void* args){
 	
 	disastrOS_printStatus();
 
-	for(int i = 1; i < 11; i++){
+	for(int i = 1; i <= 10; i++){
 		
 		printf("[CHILD_INFO] PID: %d, iteration: %d...\n", disastrOS_getpid(), i);
 
